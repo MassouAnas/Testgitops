@@ -8,7 +8,7 @@ node {
 
     stage('Build image') {
   
-       app = docker.build("dockerhub/gitopstest")
+       sh 'docker build -t testimg .'
     }
 
     stage('Test image') {
