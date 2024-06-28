@@ -3,32 +3,30 @@ node {
 
     stage('Clone repository') {
       
-
         checkout scm
     }
 
     stage('Build image') {
   
-       app = docker.build("skinnysydcontainersregistry.azurecr.io/pylocaltestpfe")
+       app = docker.build("dockerhub/Gitopstest")
     }
 
     stage('Test image') {
   
-
         app.inside {
             sh 'echo "Tests passed"'
         }
     }
 
-    stage('Push image') {
+    // stage('Push image') {
         
-        docker.withRegistry('https://skinnysydcontainersregistry.azurecr.io', 'azurecr') {
-            app.push("${env.BUILD_NUMBER}")
-        }
-    }
+    //     docker.withRegistry('https://skinnysydcontainersregistry.azurecr.io', 'azurecr') {
+    //         app.push("${env.BUILD_NUMBER}")
+    //     }
+    // }
     
-    stage('Trigger ManifestUpdate') {
-                echo "triggering updatemanifestjob"
-                build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
-        }
-}
+//     stage('Trigger ManifestUpdate') {
+//                 echo "triggering updatemanifestjob"
+//                 build job: 'updatemanifest', parameters: [string(name: 'DOCKERTAG', value: env.BUILD_NUMBER)]
+//         }
+// }
